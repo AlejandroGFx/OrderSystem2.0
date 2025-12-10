@@ -1,0 +1,26 @@
+### Login pepe
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{ "username": "pepe", "password": "1234" }
+
+> {% client.global.set("token_pepe", response.body.token); %}
+
+### Crear orden para customer 1 (pepe)
+POST http://localhost:8080/orders/1/makeOrder
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXBlIiwicm9sZXMiOiJST0xFX1VTRVIiLCJ1aWQiOjMzLCJpYXQiOjE3NTYyMTA1NjMsImV4cCI6MTc1NjIxNDE2M30.JMcEAw1VFN0U-HrFR9jBj5E56fwr55wdGwbWCO3LibY
+Content-Type: application/json
+
+{ "items": [ { "productId": 1, "quantity": 1 } ] }
+
+### Intentar borrar con ana (debe 403)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{ "username": "ana", "password": "1234" }
+
+> {% client.global.set("token_ana", response.body.token); %}
+
+###
+DELETE http://localhost:8080/orders/1
+Authorization: Bearer {{token_ana}}
